@@ -44,8 +44,10 @@ dependencies:
       - hydra-optuna-sweeper
       - hydra-colorlog
       - rootutils
+      # Test dependencies
+      - sh
       # Current logger versions
       - tensorboard==2.15.*
       - aim==3.17.*
-      # Test dependencies
-      - sh
+      # Other
+      - matplotlib==3.8.*
