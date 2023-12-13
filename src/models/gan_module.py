@@ -54,8 +54,6 @@ class Discriminator(nn.Module):
 
 
 class GAN(L.LightningModule):
-    """GAN LightningModule."""
-
     def __init__(
         self,
         channels: int,
@@ -68,18 +66,6 @@ class GAN(L.LightningModule):
         batch_size: int = 64,
         **kwargs,
     ):
-        """_summary_
-
-        Args:
-            channels (int): Data sample channels
-            width (int): Data sample channels width
-            height (int): Data sample height
-            latent_dim (int, optional): Model latent dim. Defaults to 100.
-            lr (float, optional): Model learning rate. Defaults to 0.0002.
-            b1 (float, optional): Weight b1. Defaults to 0.5.
-            b2 (float, optional): Weight b2. Defaults to 0.999.
-            batch_size (int, optional): Data batch size. Defaults to 64.
-        """
         super().__init__()
         self.save_hyperparameters()
         self.automatic_optimization = False
