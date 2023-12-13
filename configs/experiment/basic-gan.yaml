@@ -8,7 +8,7 @@ defaults:
   - override /model: gan
   - override /callbacks: default
   - override /trainer: gpu
-  - override /logger: many_loggers
+  - override /logger: tensorboard
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
@@ -35,6 +35,5 @@ trainer:
   min_epochs: 10
   max_epochs: 10
 
-logger:
-  aim:
-    experiment: "gan"
+train: True
+test: False
