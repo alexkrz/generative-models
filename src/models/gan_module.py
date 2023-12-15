@@ -11,8 +11,8 @@ class GAN(L.LightningModule):
         generator: torch.nn.Module,
         discriminator: torch.nn.Module,
         channels: int,
-        width: int,
         height: int,
+        width: int,
         latent_dim: int = 100,
         lr: float = 0.0002,
         b1: float = 0.5,
@@ -24,9 +24,9 @@ class GAN(L.LightningModule):
         self.automatic_optimization = False
 
         # networks
-        data_shape = (channels, width, height)
-        self.generator = generator(channels, width, height, latent_dim)
-        self.discriminator = discriminator(channels, width, height)
+        data_shape = (channels, height, width)
+        self.generator = generator(channels, height, width, latent_dim)
+        self.discriminator = discriminator(channels, height, width)
 
         self.validation_z = torch.randn(8, self.hparams.latent_dim)
 

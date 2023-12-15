@@ -5,9 +5,9 @@ import torch.nn as nn
 
 
 class Generator(nn.Module):
-    def __init__(self, channels: int, width: int, height: int, latent_dim: int):
+    def __init__(self, channels: int, height: int, width: int, latent_dim: int):
         super().__init__()
-        self.img_shape = (channels, width, height)
+        self.img_shape = (channels, height, width)
         self.latent_dim = latent_dim
 
         assert width == height, "Image must have square shape"
@@ -36,9 +36,9 @@ class Generator(nn.Module):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, channels: int, width: int, height: int):
+    def __init__(self, channels: int, height: int, width: int):
         super().__init__()
-        self.img_shape = (channels, width, height)
+        self.img_shape = (channels, height, width)
 
         assert width == height, "Image must have square shape"
 

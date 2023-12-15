@@ -4,9 +4,9 @@ import torch.nn as nn
 
 
 class Generator(nn.Module):
-    def __init__(self, channels: int, width: int, height: int, latent_dim: int):
+    def __init__(self, channels: int, height: int, width: int, latent_dim: int):
         super().__init__()
-        self.img_shape = (channels, width, height)
+        self.img_shape = (channels, height, width)
         self.latent_dim = latent_dim
 
         def block(in_feat, out_feat, normalize=True):
@@ -32,9 +32,9 @@ class Generator(nn.Module):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, channels: int, width: int, height: int):
+    def __init__(self, channels: int, height: int, width: int):
         super().__init__()
-        self.img_shape = (channels, width, height)
+        self.img_shape = (channels, height, width)
 
         self.model = nn.Sequential(
             nn.Linear(int(np.prod(self.img_shape)), 512),
