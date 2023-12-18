@@ -5,7 +5,7 @@
 
 defaults:
   - override /data: mnist
-  - override /model: dc_gan_v1
+  - override /model: dc_gan
   - override /callbacks: default
   - override /trainer: gpu
   - override /logger: tensorboard
@@ -13,8 +13,8 @@ defaults:
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-task_name: "dc_gan_v1"
-tags: ["dc_gan_v1"]
+task_name: "dc_gan"
+tags: ["dc_gan"]
 
 seed: 12345
 

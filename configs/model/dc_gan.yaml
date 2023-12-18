@@ -1,12 +1,12 @@
 _target_: src.models.gan_module.GAN
 
 generator:
-  _target_: src.models.gan_components.dc_gan_v1.Generator
+  _target_: src.models.gan_components.dc_gan.Generator
   latent_dim: 100
   feat_dim: 128
   channels: 1
 discriminator:
-  _target_: src.models.gan_components.dc_gan_v1.Discriminator
+  _target_: src.models.gan_components.dc_gan.Discriminator
   channels: 1
   feat_dim: 128
 custom_weights_init: dc_gan
