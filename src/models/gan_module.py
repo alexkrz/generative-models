@@ -1,3 +1,5 @@
+from typing import Optional
+
 import lightning as L
 import torch
 import torch.nn as nn
@@ -5,15 +7,21 @@ import torch.nn.functional as F
 import torchvision
 
 
+def dc_gan_init(m: nn.Module):
+    classname = m.__class__.__name__
+    if classname.find("Conv") != -1:
+        nn.init.normal_(m.weight.data, 0.0, 0.02)
+    elif classname.find("BatchNorm") != -1:
+        nn.init.normal_(m.weight.data, 1.0, 0.02)
+        nn.init.constant_(m.bias.data, 0)
+
+
 class GAN(L.LightningModule):
     def __init__(
         self,
-        generator: torch.nn.Module,
-        discriminator: torch.nn.Module,
-        channels: int,
-        height: int,
-        width: int,
-        latent_dim: int = 100,
+        generator: nn.Module,
+        discriminator: nn.Module,
+        custom_weights_init: Optional[str] = None,
         lr: float = 0.0002,
         b1: float = 0.5,
         b2: float = 0.999,
@@ -24,19 +32,22 @@ class GAN(L.LightningModule):
         self.automatic_optimization = False
 
         # networks
-        data_shape = (channels, height, width)
-        self.generator = generator(channels, height, width, latent_dim)
-        self.discriminator = discriminator(channels, height, width)
+        self.generator = generator
+        self.discriminator = discriminator
+
+        if custom_weights_init == "dc_gan":
+            self.generator.apply(dc_gan_init)
+            self.discriminator.apply(dc_gan_init)
+
+        self.criterion = nn.BCELoss()
 
         self.validation_z = torch.randn(8, self.hparams.latent_dim)
-
-        self.example_input_array = torch.zeros(2, self.hparams.latent_dim)
 
     def forward(self, z):
         return self.generator(z)
 
     def adversarial_loss(self, y_hat, y):
-        return F.binary_cross_entropy(y_hat, y)
+        return self.criterion(y_hat, y)
 
     def training_step(self, batch):
         imgs, _ = batch

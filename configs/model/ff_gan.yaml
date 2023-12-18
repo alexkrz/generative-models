@@ -2,14 +2,15 @@ _target_: src.models.gan_module.GAN
 
 generator:
   _target_: src.models.gan_components.ff_gan.Generator
-  _partial_: true
+  channels: 1
+  height: 28
+  width: 28
+  latent_dim: 100
 discriminator:
   _target_: src.models.gan_components.ff_gan.Discriminator
-  _partial_: true
-channels: 1
-height: 28
-width: 28
-latent_dim: 100
+  channels: 1
+  height: 28
+  width: 28
 lr: 0.0002
 b1: 0.5
 b2: 0.999

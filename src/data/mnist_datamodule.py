@@ -59,9 +59,8 @@ class MNISTDataModule(LightningDataModule):
         batch_size: int = 64,
         num_workers: int = 0,
         pin_memory: bool = False,
-        transforms: Optional[transforms.Compose] = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-        ),
+        transform: str = "default",
+        img_size: Optional[int] = None,
     ) -> None:
         """Initialize a `MNISTDataModule`.
 
@@ -78,7 +77,26 @@ class MNISTDataModule(LightningDataModule):
         self.save_hyperparameters(logger=False)
 
         # data transformations
-        self.transforms = transforms
+        if transform == "raw":
+            self.transforms = None
+        elif transform == "default":
+            self.transforms = transforms.Compose(
+                [
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,), (0.3081,)),
+                ]
+            )
+        elif transform == "resize":
+            self.transforms = transforms.Compose(
+                [
+                    transforms.Resize(img_size),
+                    transforms.CenterCrop(img_size),
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,), (0.3081,)),
+                ]
+            )
+        else:
+            raise RuntimeError("transform must be in [raw, default, resize]")
 
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
