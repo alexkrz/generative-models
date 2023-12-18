@@ -28,7 +28,7 @@ class GAN(L.LightningModule):
         **kwargs,
     ):
         super().__init__()
-        self.save_hyperparameters()
+        self.save_hyperparameters(ignore=["generator", "discriminator"])
         self.automatic_optimization = False
 
         # networks
@@ -68,7 +68,7 @@ class GAN(L.LightningModule):
         grid = torchvision.utils.make_grid(sample_imgs)
         self.logger.experiment.add_image("generated_images", grid, 0)
 
-        # ground truth result (ie: all fake)
+        # ground truth result (pretend generator creates real images)
         # put on GPU because we created this tensor inside training_loop
         valid = torch.ones(imgs.size(0), 1)
         valid = valid.type_as(imgs)
