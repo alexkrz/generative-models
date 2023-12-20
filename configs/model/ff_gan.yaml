@@ -1,4 +1,4 @@
-_target_: src.models.gan_module.GAN
+_target_: src.models.gan_module.GANModule
 
 generator:
   _target_: src.models.gan_components.ff_gan.Generator

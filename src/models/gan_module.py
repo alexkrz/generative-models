@@ -16,7 +16,7 @@ def dc_gan_init(m: nn.Module):
         nn.init.constant_(m.bias.data, 0)
 
 
-class GAN(L.LightningModule):
+class GANModule(L.LightningModule):
     def __init__(
         self,
         generator: nn.Module,
