@@ -14,7 +14,7 @@ class VAEModule(L.LightningModule):
     ):
         super().__init__()
 
-        self.save_hyperparameters()
+        self.save_hyperparameters(ignore=["model"])
         self.model = model
 
     def forward(self, x):
