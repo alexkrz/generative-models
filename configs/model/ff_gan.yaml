@@ -1,0 +1,16 @@
+_target_: src.models.gan_module.GANModule
+
+generator:
+  _target_: src.models.gan_components.ff_gan.Generator
+  channels: 1
+  height: 28
+  width: 28
+  latent_dim: 100
+discriminator:
+  _target_: src.models.gan_components.ff_gan.Discriminator
+  channels: 1
+  height: 28
+  width: 28
+lr: 0.0002
+b1: 0.5
+b2: 0.999

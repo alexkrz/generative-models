@@ -59,6 +59,8 @@ class MNISTDataModule(LightningDataModule):
         batch_size: int = 64,
         num_workers: int = 0,
         pin_memory: bool = False,
+        transform: str = "default",
+        img_size: Optional[int] = None,
     ) -> None:
         """Initialize a `MNISTDataModule`.
 
@@ -75,9 +77,26 @@ class MNISTDataModule(LightningDataModule):
         self.save_hyperparameters(logger=False)
 
         # data transformations
-        self.transforms = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-        )
+        if transform == "raw":
+            self.transforms = None
+        elif transform == "default":
+            self.transforms = transforms.Compose(
+                [
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,), (0.3081,)),
+                ]
+            )
+        elif transform == "resize":
+            self.transforms = transforms.Compose(
+                [
+                    transforms.Resize(img_size),
+                    transforms.CenterCrop(img_size),
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,), (0.3081,)),
+                ]
+            )
+        else:
+            raise RuntimeError("transform must be in [raw, default, resize]")
 
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
@@ -198,4 +217,13 @@ class MNISTDataModule(LightningDataModule):
 
 
 if __name__ == "__main__":
-    _ = MNISTDataModule()
+    dm = MNISTDataModule(num_workers=8, transforms=None)
+    dm.setup("fit")
+    dataloader = dm.train_dataloader()
+    dataset = dataloader.dataset
+    # for i in range(16):
+    #     img, label = dataset[i]
+    #     print(img)
+    # data_iter = iter(dataloader)
+    # batch = next(data_iter)
+    # print(batch)
